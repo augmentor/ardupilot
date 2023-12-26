@@ -579,6 +579,7 @@ protected:
 
     void handle_common_message(const mavlink_message_t &msg);
     void handle_set_gps_global_origin(const mavlink_message_t &msg);
+    void handle_set_estimated_wind(const mavlink_message_t &msg);
     void handle_setup_signing(const mavlink_message_t &msg) const;
     virtual MAV_RESULT handle_preflight_reboot(const mavlink_command_int_t &packet, const mavlink_message_t &msg);
 #if AP_MAVLINK_FAILURE_CREATION_ENABLED

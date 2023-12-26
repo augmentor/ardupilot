@@ -797,6 +797,11 @@ private:
 
     // cached trim rotations
     Vector3f _last_trim;
+// externally set wind
+    Vector3f _external_wind;
+
+    bool _get_external_wind(Vector3f &ret) const WARN_IF_UNUSED;
+    bool set_external_wind(const Vector3f &wind) WARN_IF_UNUSED;
 
     Matrix3f _rotation_autopilot_body_to_vehicle_body;
     Matrix3f _rotation_vehicle_body_to_autopilot_body;

@@ -1407,6 +1407,22 @@ bool AP_AHRS::set_origin(const Location &loc)
     return false;
 }
 
+bool AP_AHRS::_get_external_wind(Vector3f &ret)
+{
+	ret.x = _external_wind.x;
+	ret.y = _external_wind.y;
+	ret.z = _external_wind.z;
+	return true;
+}
+
+bool AP_AHRS::set_external_wind(const Vector3f &wind)
+{
+	WITH_SEMAPHORE(_rsem);
+	_external_wind.x = wind.x;
+	_external_wind.y = wind.y;
+	_external_wind.z = wind.z;
+}
+
 #if AP_AHRS_POSITION_RESET_ENABLED
 bool AP_AHRS::handle_external_position_estimate(const Location &loc, float pos_accuracy, uint32_t timestamp_ms)
 {

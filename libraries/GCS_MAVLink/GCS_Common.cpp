@@ -3543,6 +3543,13 @@ void GCS_MAVLINK::set_ekf_origin(const Location& loc)
     }
 }
 
+void GCS_MAVLINK::set_user_wind(const Vector3f & wind)
+{
+	  AP_AHRS &ahrs = AP::ahrs();
+	  ahrs.set_external_wind(wind);
+
+}
+
 void GCS_MAVLINK::handle_set_gps_global_origin(const mavlink_message_t &msg)
 {
     mavlink_set_gps_global_origin_t packet;
@@ -3559,6 +3566,27 @@ void GCS_MAVLINK::handle_set_gps_global_origin(const mavlink_message_t &msg)
     ekf_origin.lng = packet.longitude;
     ekf_origin.alt = packet.altitude / 10;
     set_ekf_origin(ekf_origin);
+}
+
+
+void GCS_MAVLINK::handle_set_estimated_wind(const mavlink_message_t &msg)
+{
+	 mavlink_set_estimated_wind_information_t packet;
+	 mavlink_msg_set_estimated_wind_information_decode(&msg, &packet);
+
+	 // add sanity check
+	 if(true == false) // dummy check
+	 {
+		 return;
+	 }
+
+	 Vector3f user_defined_wind;
+	 user_defined_wind.x = packet.est_wind_x;
+	 user_defined_wind.y = packet.est_wind_y;
+	 user_defined_wind.z = packet.est_wind_z;
+
+
+
 }
 
 /*
@@ -3934,6 +3962,10 @@ void GCS_MAVLINK::handle_common_message(const mavlink_message_t &msg)
         handle_set_gps_global_origin(msg);
         break;
 
+
+    case MAVLINK_MSG_ID_SET_ESTIMATED_WIND_INFORMATION:
+    	handle_set_estimated_wind(msg);
+    	break;
 #if AP_MAVLINK_MSG_DEVICE_OP_ENABLED
     case MAVLINK_MSG_ID_DEVICE_OP_READ:
         handle_device_op_read(msg);
